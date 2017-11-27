@@ -1,0 +1,12 @@
+#home {
+  background: url(https://static.pexels.com/photos/34088/pexels-photo.jpg) no-repeat center center;
+  -webkit-background-attachment: fixed;
+  background-attachment: fixed;
+  background-size: cover;
+  padding: 0;
+  position: relative;
+  height: 700px;
+}
+h1 {
+  color: #fff
+}
