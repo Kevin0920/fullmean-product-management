@@ -7,18 +7,26 @@ module.exports = function(app){
     products.allProduct(req, res);
   })
 
+  app.post('/register', function(req, res) {
+    products.register(req, res);
+  })
+
+  app.post('/login', function(req, res) {
+    products.login(req, res);
+  })
+
   app.post('/products', function(req,res){
     products.create(req, res)
   })
-  
+
   app.put('/products/edit/:id', function(req, res) {
     products.update(req, res);
   })
-  
+
   app.get('/products/:id',(req,res,next)=>{products.oneProduct(req,res)})
-  
+
   app.delete('/products/:id',(req,res,next)=>{products.destroy(req,res)})
-  
+
 	app.all("*",function(req,res){
 		res.sendFile('index.html', { root: './client/dist' });
 	})

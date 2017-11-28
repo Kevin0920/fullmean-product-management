@@ -9,15 +9,19 @@ import { Router } from "@angular/router";
   styleUrls: ['./list.component.css']
 })
 export class ListComponent implements OnInit {
-  
+
   products=[];
-  
+
   constructor(private _service: ProductService, private _router: Router) { }
-   
+
   ngOnInit() {
-    this._service.retrieveProduct(res=>{this.products = res});
+    if (this._service.user == null) {
+        this._router.navigate(['']);
+    } else {  
+      this._service.retrieveProduct(res=>{this.products = res});
+    }
   }
-  
+
   deleteProduct(id) {
     this._service.delete(id, (res)=>{this.products = res});
     // this._service.retrieveProduct(res=>{this.products = res});

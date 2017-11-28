@@ -34,6 +34,9 @@ export class CreateComponent implements OnInit {
 
 
   ngOnInit() {
+    if (this._service.user == null) {
+        this._router.navigate(['']);
+    }
   }
 
 }

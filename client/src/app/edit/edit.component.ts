@@ -18,16 +18,21 @@ export class EditComponent implements OnInit {
   constructor(private _service: ProductService, private _router: Router, private _route: ActivatedRoute) { }
 
   ngOnInit() {
-    this._route.paramMap.subscribe(params=>{
-      console.log(params.get('id'));
-      this._service.retrieveOneProduct(params.get('id'),(res)=>{
-        this.product = res;
-        this.id = params.get('id');
-        console.log(this.id);
-      })
-    })
+    if (this._service.user == null) {
+        this._router.navigate(['']);
+    } else {
+      this._route.paramMap.subscribe(params=>{
+        console.log(params.get('id'));
+        this._service.retrieveOneProduct(params.get('id'),(res)=>{
+          this.product = res;
+          this.id = params.get('id');
+          console.log(this.id);
+        });
+      });
+    }
+
   }
-  
+
   updateProduct(id){
     this._service.getPostNewPro(this.id, this.product);
     this._router.navigate(['list']);
