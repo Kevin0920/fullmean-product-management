@@ -6,34 +6,43 @@ module.exports = {
 
   register: function(req, res) {
     console.log("from controller register: ", req.body);
-    var user = new User({userName: req.body.userName, email: req.body.email, password: req.body.password});
-    user.save(function(err, user) {
+    User.findOne({email: req.body.email}, function(err, user) {
+      console.log("from controller reg user: ", user);
       if (err) {
-        console.log("can't create this user", err);
-        // res.json({err:err});
-        // response a json data in browser console area
-        res.json({error:"can't create user"});
+        console.log("register error from controller", err);
       }
       else {
-        console.log(user);
-        res.json(user);
+        if (user == null) {
+          var user = new User({userName: req.body.userName, email: req.body.email, password: req.body.password});
+          user.save(function(err, user) {
+            if (err) {
+              console.log("from controller reg: ", err);
+            }
+            else {
+              res.json({success:"success", user:user});
+            }
+          })
+        }
       }
     })
   },
 
   login: function(req, res) {
+    console.log(req.body);
     console.log("from controller login: ", req.body.email);
-    User.findOne({email: req.body.email}, function(err, user) {
+    User.findOne({email: req.body.email, password: req.body.qassward}, function(err, user) {
       if (err) {
         console.log("can't find user email from login controller", err);
       }
       else {
         console.log("successfully login", user);
         res.json(user);
+        console.log();
       }
     })
 
   },
+
 
   allProduct: function(req, res) {
     Product.find({}).sort('createdAt').exec(function(err, products) {
@@ -48,7 +57,7 @@ module.exports = {
   create: function(req, res) {
     console.log(req.body);
     console.log("back create route");
-    var product = new Product({title: req.body.title, price: req.body.price, image: req.body.image_url});
+    var product = new Product({title: req.body.title, price: req.body.price, image_url: req.body.image_url});
 
     product.save(function(err) {
       if (err) {

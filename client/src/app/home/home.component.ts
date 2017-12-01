@@ -12,7 +12,8 @@ import { ActivatedRoute } from '@angular/router';
 
 export class HomeComponent implements OnInit {
   err_message = {
-    err:""
+    email:"",
+    password:""
   }
   user_reg = {
     userName:"",
@@ -20,10 +21,15 @@ export class HomeComponent implements OnInit {
     password:""
   }
 
+  password_confirm = {
+    con:""
+  }
+
   user_login = {
     email:"",
     password:""
   }
+
 
   constructor(private _service: ProductService, private _route: Router) { }
 
@@ -31,26 +37,38 @@ export class HomeComponent implements OnInit {
     this._service.login(this.user_login, (res) => {
       console.log("front login: ", res.json());
       console.log("login data sending route");
+      if(res.json() === null) {
+        console.log(res.json());
+      }
+      else {
+        this._route.navigate(['/create']);
+      }
       this.user_login = {
         email:"",
         password:""
       }
+
     });
-    this._route.navigate(['/create']);
   }
 
   register() {
+    console.log("from com register: ", this.user_reg);
     this._service.register(this.user_reg, (res) => {
-      console.log(res.json());
-      console.log("register data sending route");
+      if(res.success === "success") {
+        this._route.navigate(['/create']);
+      }
+      else {
+        this.err_message.email = "This email has been registered."
+      }
       this.user_reg = {
         userName:"",
         email:"",
         password:""
       };
+      this.password_confirm = {
+        con:""
+      };
     });
-    // navigate the route in front end in app-routing
-    this._route.navigate(['/create']);
   }
 
 
